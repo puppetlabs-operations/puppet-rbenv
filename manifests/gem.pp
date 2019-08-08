@@ -65,7 +65,13 @@ define rbenv::gem(
   }
 
   if ($skip_docs) {
-    $docs = '--no-ri --no-rdoc'
+    if ($ruby_version =~ /^1\./) or ($ruby_version =~ /^2\.[0-5]\./) {
+      # Use the old-style no docs flags on Ruby < 2.6.0
+      $docs = '--no-ri --no-rdoc'
+    } else {
+      # Ruby 2.6.0 and beyond need to new-style no docs flag
+      $docs = '--no-document'
+    }
   } else {
     $docs = ''
   }
