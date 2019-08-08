@@ -65,14 +65,20 @@ define rbenv::gem(
   }
 
   if ($skip_docs) {
-    $docs = '--no-ri --no-rdoc'
+    if ($ruby_version =~ /^1\./) or ($ruby_version =~ /^2\.[0-5]\./) {
+      # Use the old-style no docs flags on Ruby < 2.6.0
+      $docs = '--no-ri --no-rdoc'
+    } else {
+      # Ruby 2.6.0 and beyond need to new-style no docs flag
+      $docs = '--no-document'
+    }
   } else {
     $docs = ''
   }
 
   $environment_for_install = concat(["RBENV_ROOT=${install_dir}"], $env)
 
-  exec { "gem-install-${gem}-${ruby_version}":
+  exec { "gem-install-${ruby_version}-${gem}-${version}":
     command => "gem install ${gem} --version '${version}' ${docs}",
     unless  => "gem list ${gem} --installed --version '${version}'",
     path    => [
@@ -84,11 +90,11 @@ define rbenv::gem(
     ],
     timeout => $timeout
   }~>
-  exec { "rbenv-rehash-${gem}-${ruby_version}":
+  exec { "rbenv-rehash-${ruby_version}-${gem}-${version}":
     command     => "${install_dir}/bin/rbenv rehash",
     refreshonly => true,
   }~>
-  exec { "rbenv-permissions-${gem}-${ruby_version}":
+  exec { "rbenv-permissions-${ruby_version}-${gem}-${version}":
     command     => "/bin/chown -R ${rbenv::owner}:${rbenv::group} \
                   ${install_dir}/versions/${ruby_version}/lib/ruby/gems && \
                   /bin/chmod -R g+w \

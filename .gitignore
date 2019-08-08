@@ -1,5 +1,6 @@
 Gemfile.lock
 *.swp
+.bundle/
 .librarian/
 .tmp/
 .vagrant

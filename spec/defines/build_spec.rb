@@ -2,6 +2,13 @@ require 'spec_helper'
 
 describe 'rbenv::build' do
   describe 'install 2.0.0-p247' do
+    let(:pre_condition) do
+      [
+        'include rbenv',
+        'rbenv::plugin { "sstephenson/ruby-build": }',
+      ]
+    end
+
     let(:title) { '2.0.0-p247' }
     let(:facts) { { :osfamily => 'Debian', :vardir => '/var/lib/puppet' } }
     let(:params) do
@@ -40,7 +47,7 @@ describe 'rbenv::build' do
 
     # Regex because we use ::settings::vardir which is a randomly
     # named tmp directory in the tests
-    patch_cmd_regex = /rbenv install 2\.0\.0-p247 --patch < \/tmp\/[0-9a-z-]+\/rbenv\/2\.0\.0-p247\.patch/
+    patch_cmd_regex = /rbenv install 2\.0\.0-p247 --patch < \/.*\/rbenv\/2\.0\.0-p247\.patch/
 
     context 'with patch => file:///path/to/patch.patch' do
       let(:params) do
