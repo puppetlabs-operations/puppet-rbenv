@@ -10,7 +10,7 @@
 #   This variable is optional.
 #
 class rbenv::deps::debian (
-  Array $packages = ['libgdbm6', 'libssl-dev']
+  Array $packages = ['libgdbm6', 'libssl-dev', 'libncurses5-dev']
 ) {
   $default_packages = [
     'build-essential',
@@ -19,7 +19,6 @@ class rbenv::deps::debian (
     'zlib1g-dev',
     'libffi-dev',
     'libyaml-dev',
-    'libncurses5-dev',
     'libgdbm-dev',
     'patch',
   ]

@@ -44,4 +44,76 @@ describe 'rbenv', type: 'class' do
   }
 
   it { is_expected.to contain_exec('update-rbenv') }
+
+  context 'on ubuntu 16.04 - xenial' do
+    let(:facts) do
+      {
+        'os' => {
+          'family' => 'Debian',
+          'name'   => 'Ubuntu',
+          'distro' => {
+            'codename' => 'xenial'
+          }
+        }
+      }
+    end
+
+    it { is_expected.to contain_package('libgdbm3') }
+    it { is_expected.to contain_package('libssl-dev') }
+    it { is_expected.to contain_package('libncurses5-dev') }
+  end
+
+  context 'on ubuntu 18.04 - bionic' do
+    let(:facts) do
+      {
+        'os' => {
+          'family' => 'Debian',
+          'name'   => 'Ubuntu',
+          'distro' => {
+            'codename' => 'bionic'
+          }
+        }
+      }
+    end
+
+    it { is_expected.to contain_package('libgdbm5') }
+    it { is_expected.to contain_package('libssl1.0-dev') }
+    it { is_expected.to contain_package('libncurses5-dev') }
+  end
+
+  context 'on ubuntu 22.04 - jammy' do
+    let(:facts) do
+      {
+        'os' => {
+          'family' => 'Debian',
+          'name'   => 'Ubuntu',
+          'distro' => {
+            'codename' => 'jammy'
+          }
+        }
+      }
+    end
+
+    it { is_expected.to contain_package('libgdbm6') }
+    it { is_expected.to contain_package('libssl-dev') }
+    it { is_expected.to contain_package('libncurses5-dev') }
+  end
+
+  context 'on ubuntu 24.04 - noble' do
+    let(:facts) do
+      {
+        'os' => {
+          'family' => 'Debian',
+          'name'   => 'Ubuntu',
+          'distro' => {
+            'codename' => 'noble'
+          }
+        }
+      }
+    end
+
+    it { is_expected.to contain_package('libgdbm6t64') }
+    it { is_expected.to contain_package('libssl-dev') }
+    it { is_expected.to contain_package('libncurses-dev') }
+  end
 end
